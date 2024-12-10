@@ -1,7 +1,7 @@
 "use client"; // Required for `usePathname`
 
 import { usePathname } from "next/navigation";
-import { ChartNoAxesCombined, Home, Inbox, Search, Settings, CircleUser , UtensilsCrossed , FileClock , AlignCenter} from "lucide-react";
+import { ChartNoAxesCombined, Home, Inbox, ChartColumnBig, Settings, CircleUser , UtensilsCrossed , FileClock , AlignCenter} from "lucide-react";
 
 import {
   Sidebar,
@@ -37,6 +37,11 @@ const items = [
     title: "History",
     url: "/history",
     icon: FileClock,
+  },
+  {
+    title: "Fainance Table",
+    url: "/finance_table",
+    icon: ChartColumnBig,
   },
   {
     title: "Statstics",
