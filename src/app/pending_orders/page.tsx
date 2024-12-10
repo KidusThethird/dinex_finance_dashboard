@@ -1,17 +1,20 @@
-'use client'
+'use client';
 import ApproveConfirmationDialog from '@/components/custom_components/approve_confirmation_dialog';
 import React, { useEffect, useState } from 'react';
 import useStore from '../../lib/store';
 import { useRouter } from 'next/navigation'; // For navigation
 import { CircleCheck, Check, Ellipsis } from 'lucide-react';
-
+import { apiUrl } from '@/apiConfig';
+import { setAccessToken, getAccessToken, clearAccessToken } from "../../lib/tokenManager";
+import { toast } from 'sonner';
 
 const Orders: React.FC = () => {
   const router = useRouter();
   const [orders, setOrders] = useState<any[]>([]);
 
-  const {update_pending_page , increment_for_pending_page } = useStore();
+  const { update_pending_page, increment_for_pending_page } = useStore();
 
+  const accessToken = getAccessToken();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -27,7 +30,31 @@ const Orders: React.FC = () => {
     fetchOrders();
   }, [update_pending_page]);
 
+  const updatedData = {
+    "Seen": "true",
+  };
 
+  const updateSeen = async (orderId: any) => {
+    try {
+      const response = await fetch(`${apiUrl}/finance_info/${orderId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(updatedData),
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        increment_for_pending_page();
+      } else {
+        console.error("Failed to update file");
+      }
+    } catch (error) {
+      console.error("Error updating file", error);
+    }
+  };
 
   const formatTime = (timestamp: string) => {
     const now = new Date();
@@ -50,14 +77,10 @@ const Orders: React.FC = () => {
     <div className="p-6 mt-14">
       <h1 className="text-3xl font-bold mb-6">Pending Orders</h1>
 
-     
-      
-
-
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr>
-          <th className="border border-gray-300 p-2">Details</th>
+            <th className="border border-gray-300 p-2">Details</th>
             <th className="border border-gray-300 p-2">Table Number</th>
             <th className="border border-gray-300 p-2">Waiter Name</th>
             <th className="border border-gray-300 p-2">Order Details</th>
@@ -73,12 +96,18 @@ const Orders: React.FC = () => {
               0
             );
 
+            // Determine the background color based on the 'Seen' attribute
+            const rowClass = order.Seen === 'true' ? 'bg-white' : 'bg-primaryColor bg-opacity-50 ';
+
             return (
-              <tr key={order.id}>
+              <tr key={order.id} className={rowClass}>
                 <td className="border border-gray-300 p-2 text-center">
                   <button
-                    onClick={() => router.push(`/order_details/${order.id}`)}
-                    className=" text-primaryColor px-1 py-1 rounded hover:bg-primaryColor hover:text-white transition"
+                    onClick={() => {
+                      router.push(`/order_details/${order.id}`);
+                      updateSeen(order.id); // Calling the second function
+                    }}
+                    className="text-primaryColor px-1 py-1 rounded hover:bg-primaryColor hover:text-white transition"
                   >
                     <Ellipsis />
                   </button>
@@ -105,7 +134,15 @@ const Orders: React.FC = () => {
                   {formatTime(order.createdAt)}
                 </td>
                 <td className="border border-gray-300 p-2 text-center">
-                 <ApproveConfirmationDialog apiLink='finance_info' backTo='' buttonTitle='Approve' changeTo='approved' description='Are you sure to approve this order?' field='OrderStatus' id={order?.id}/>
+                  <ApproveConfirmationDialog
+                    apiLink="finance_info"
+                    backTo=""
+                    buttonTitle="Approve"
+                    changeTo="approved"
+                    description="Are you sure to approve this order?"
+                    field="OrderStatus"
+                    id={order?.id}
+                  />
                 </td>
               </tr>
             );

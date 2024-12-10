@@ -1,7 +1,7 @@
 "use client"; // Required for `usePathname`
 
 import { usePathname } from "next/navigation";
-import { Calendar, Home, Inbox, Search, Settings, CircleUser , UtensilsCrossed , FileClock , AlignCenter} from "lucide-react";
+import { ChartNoAxesCombined, Home, Inbox, Search, Settings, CircleUser , UtensilsCrossed , FileClock , AlignCenter} from "lucide-react";
 
 import {
   Sidebar,
@@ -38,7 +38,11 @@ const items = [
     url: "/history",
     icon: FileClock,
   },
-
+  {
+    title: "Statstics",
+    url: "/finance_statstics",
+    icon: ChartNoAxesCombined,
+  },
   {
     title: "Settings",
     url: "/settings",
@@ -64,7 +68,7 @@ export function AppSidebar() {
             />
           </div>
 
-          <SidebarGroupLabel>DineX Admin Dashboard</SidebarGroupLabel>
+          <SidebarGroupLabel>DineX Finance Dashboard</SidebarGroupLabel>
 
           {/* Sidebar Menu */}
           <SidebarGroupContent>
