@@ -1,4 +1,5 @@
 'use client';
+import { apiUrl } from '@/apiConfig';
 import React, { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -7,7 +8,7 @@ const Home = () => {
   // Function to fetch orders
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:5000/finance_info/new');
+      const response = await fetch(`${apiUrl}/finance_info/new`);
       const data = await response.json();
       setOrders(data);
     } catch (error) {

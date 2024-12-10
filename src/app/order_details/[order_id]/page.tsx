@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import ApproveConfirmationDialog from '@/components/custom_components/approve_confirmation_dialog';
 import useStore from '../../../lib/store';
+import { apiUrl } from '@/apiConfig';
 
 export default function OrderDetails({ params: rawParams }: any) {
   const [orderDetails, setOrderDetails] = useState<any>(null);
@@ -37,7 +38,7 @@ export default function OrderDetails({ params: rawParams }: any) {
       if (!params) return; // Wait until params are resolved
 
       try {
-        const response = await fetch(`http://localhost:5000/orderitem/${params.order_id}`, {
+        const response = await fetch(`${apiUrl}/orderitem/${params.order_id}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

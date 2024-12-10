@@ -22,11 +22,7 @@ const items = [
     url: "/home",
     icon: Home,
   },
-  {
-    title: "Inbox",
-    url: "/inbox",
-    icon: Inbox,
-  },
+ 
  
   {
     title: "Pending Orders",

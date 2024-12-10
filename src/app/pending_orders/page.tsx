@@ -19,7 +19,7 @@ const Orders: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/finance_info/pending');
+        const response = await fetch(`${apiUrl}/finance_info/pending`);
         const data = await response.json();
         setOrders(data);
       } catch (error) {

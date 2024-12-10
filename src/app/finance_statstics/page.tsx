@@ -1,4 +1,5 @@
 'use client';
+import { apiUrl } from '@/apiConfig';
 import React, { useEffect, useState } from 'react';
 
 // Types for the fetched data
@@ -69,7 +70,7 @@ export default function Statstics() {
   // Function to fetch orders
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:5000/finance_info/');
+      const response = await fetch(`${apiUrl}/finance_info/`);
       const data: Order[] = await response.json();
       setOrders(data);
       setFilteredOrders(filterOrdersByTime(data, timePeriod)); // Filter orders when fetched

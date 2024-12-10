@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import useStore from '../../lib/store';
 import { CircleCheck, Check, CircleEllipsis, Ellipsis } from 'lucide-react';
 import { useRouter } from 'next/navigation'; // For navigation
+import { apiUrl } from '@/apiConfig';
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<any[]>([]);
@@ -15,7 +16,7 @@ const Orders: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/finance_info/');
+        const response = await fetch(`${apiUrl}/finance_info/`);
         const data = await response.json();
         setOrders(data);
       } catch (error) {
